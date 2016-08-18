@@ -1,0 +1,58 @@
+inoremap ( ()<Esc>i
+inoremap [ []<Esc>i
+""inoremap { {<CR>}<Esc>O
+autocmd Syntax html,vim inoremap < <lt>><Esc>i| inoremap > <c-r>=ClosePair('>')<CR>
+inoremap ) <c-r>=ClosePair(')')<CR>
+inoremap ] <c-r>=ClosePair(']')<CR>
+inoremap } <c-r>=ClosePair('}')<CR>
+"inoremap } <c-r>=CloseBracket()<CR>
+inoremap " <c-r>=QuoteDelim('"')<CR>
+inoremap ' <c-r>=QuoteDelim("'")<CR>
+filetype detect
+let cur_filename = expand('%:t')
+if stridx(cur_filename, "perl") >= 0
+    ""inoremap {<CR> {<CR>}<Esc>ko
+endif
+
+
+" If you quickly press Enter after the open brace (to begin a code block), the closing brace will be inserted on the line below the cursor
+" If you quickly press the open brace key again after the open brace, nothing extra will be inserted—you will just get a single open brace.
+" if you quickly type an open and close brace, Vim will not do anything special.
+inoremap {      {}<Left>
+inoremap {<CR>  {<CR>}<Esc>O
+inoremap {{     {
+inoremap {}     {}
+
+
+
+function ClosePair(char)
+ if getline('.')[col('.') - 1] == a:char
+ return "\<Right>"
+ else
+ return a:char
+ endif
+endf
+
+function CloseBracket()
+ if match(getline(line('.') + 1), '\s*}') < 0
+ return "\<CR>}"
+ else
+ return "\<Esc>j0f}a"
+ endif
+endf
+
+function QuoteDelim(char)
+ let line = getline('.')
+ let col = col('.')
+ if line[col - 2] == "\\"
+ "Inserting a quoted quotation mark into the string
+ return a:char
+ elseif line[col - 1] == a:char
+ "Escaping out of the string
+ return "\<Right>"
+ else
+ "Starting a string
+ return a:char.a:char."\<Esc>i"
+ endif
+endf
+

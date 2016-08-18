@@ -1,0 +1,5 @@
+call vundle#begin()
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'mileszs/ack.vim'
+Plugin 'kien/ctrlp.vim'
+call vundle#end()
