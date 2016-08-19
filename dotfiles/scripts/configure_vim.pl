@@ -22,6 +22,7 @@ sub setup_from_git {
 }
 
 sub back_up_everything {
+    print_me("Backing up .vimrc and .vim into ~/backup/vim_back_x directory");
     my $current_time_str = join("_", split(/ /, localtime));
     my $dir_name = "~/backup/vim_backup_" . $current_time_str;
     my $create_backup_dir = `mkdir -p $dir_name`;
@@ -59,7 +60,7 @@ sub setup_vim_files {
 sub install_plugins {
 	print_me("...\n...\n...\n...\n");
     print_me("..............**************************....................");
-    print_me("............. Vim setup complete. Installing plugins, it may take a few moments. .....................");
+    print_me("............. Vim setup complete. Installing plugins, it may take a few minuites, please dont close the window. .....................");
     print_me("..............**************************....................");
     print_me("..............**************************....................");
     print_me("..............**************************....................");
