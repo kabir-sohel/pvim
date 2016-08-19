@@ -1,0 +1,5 @@
+#!/bin/sh
+perl dotfiles/scripts/configure_vim.pl
+echo "Vim setup done"
+
+
