@@ -84,7 +84,13 @@ sub update_vim {
     print_me "Vim setup finished succesfully";
 }
 sub install_ycm {
-    print_me "Setting ycm for the upgraded vim, dont panic if something isn't pefectly installed"; 
+    print_me "If you want to install You Complete Me plugin for vim , press 1";
+    my $input = <>;
+    chomp $input;
+    if($input != 1){
+        return;
+    }
+    print_me "Setting up ycm for the upgraded vim, dont panic if something isn't pefectly installed"; 
     my $update_vim_from_sh = `sh ~/.dotfiles/dotfiles/scripts/setup_ycm.sh`;
     print_me "YCM setup finished succesfully, Enjoy!!";
 }
@@ -101,7 +107,6 @@ sub check_vim_version {
         chomp $input;
         if($input == 1){
             update_vim();
-            install_ycm();
         }
     }
 }
@@ -112,4 +117,5 @@ setup_pathogen();
 setup_vundle();
 install_plugins();
 check_vim_version();
+install_ycm();
 
