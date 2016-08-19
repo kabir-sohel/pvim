@@ -26,24 +26,20 @@ sub back_up_everything {
     my $create_backup_dir = `mkdir -p $dir_name`;
     my $move_vimrc = `mv ~/.vimrc $dir_name`;
     my $move_vim = `mv ~/.vim/ $dir_name`;
-    my $move_dotfiles = `mv ~/.dotfiles/ $dir_name`;
 }
-
-sub setup_dotfiles {
-    #created dotfiles
-    print_me "Configuring dotfiles\n";
-    my $create_dotfiles = `mkdir -p ~/.dotfiles/`;
+sub setup_vim_files {
+    print_me "Downloading and setting up vim files\n";
     my $dotfiles_dir = "~/.dotfiles/dotfiles";
-    print_me("dotfiles dir = $dotfiles_dir");
-    my $setup_correct = setup_from_git("Dotfiles", "https://github.com/kabir-sohel/dotfiles.git", $dotfiles_dir, {});
+    my $create_or_do_nothing = `mkdir -p $dotfiles_dir`;
+    my $git_repo_dir = "~/github/pvim";
+    my $vim_files_dir = "~/github/pvim/dotfiles";
+    print_me("Git repo dir  = $git_repo_dir");
+    my $setup_correct = setup_from_git("vim_files", "https://github.com/kabir-sohel/pvim.git", $git_repo_dir, {});
 
-    #copy from dotfiles
-    #my @to_copy = qw(.plugin_options .ctags .bashrc .alias .tmux.conf .vimrc .vimrc_braces .vimrc_pathogen .vimrc_vundle );
-    my @to_copy = qw(.plugin_options .vimrc_braces .vimrc_pathogen .vimrc_vundle);
-    my $created_butdle = `mkdir -p ~/.vim/bundle`;
-    foreach my $item(@to_copy){
-        my $result = `ln -s $dotfiles_dir/$item ~/.vim/bundle`;
-    }
+
+    my $copy_everything = `cp -r $vim_files_dir/ $dotfiles_dir/`;
+    
+    my $created_bundle = `mkdir -p ~/.vim/bundle`;
     my $link_vimrc = `ln -s $dotfiles_dir/.vimrc ~/.vimrc`;
     my $vim_plugins_dir = $dotfiles_dir . "/vim_plugins";
     my @vim_files = `ls $vim_plugins_dir`;
@@ -54,7 +50,35 @@ sub setup_dotfiles {
     foreach my $vim_file(@vim_files){
         my $linked = `ln -s $vim_plugins_dir/$vim_file ~/.vim/$vim_file`;
     }
+
 }
+#sub setup_dotfiles {
+#    #created dotfiles
+#    print_me "Configuring dotfiles\n";
+#    my $create_dotfiles = `mkdir -p ~/.dotfiles/`;
+#    my $dotfiles_dir = "~/.dotfiles/dotfiles";
+#    print_me("dotfiles dir = $dotfiles_dir");
+#    my $git_dir = "~/github/pvim";
+#    my $setup_correct = setup_from_git("Dotfiles", "https://github.com/kabir-sohel/pvim.git", $dotfiles_dir, {});
+#
+#    #copy from dotfiles
+#    #my @to_copy = qw(.plugin_options .ctags .bashrc .alias .tmux.conf .vimrc .vimrc_braces .vimrc_pathogen .vimrc_vundle );
+#    my @to_copy = qw(.plugin_options .vimrc_braces .vimrc_pathogen .vimrc_vundle);
+#    my $created_butdle = `mkdir -p ~/.vim/bundle`;
+#    foreach my $item(@to_copy){
+#        my $result = `ln -s $dotfiles_dir/$item ~/.vim/bundle`;
+#    }
+#    my $link_vimrc = `ln -s $dotfiles_dir/.vimrc ~/.vimrc`;
+#    my $vim_plugins_dir = $dotfiles_dir . "/vim_plugins";
+#    my @vim_files = `ls $vim_plugins_dir`;
+#    chomp @vim_files;
+#    @vim_files = grep { $_ =~ /.vim$/ } @vim_files;
+#    print_me("following vim files will be symlinked");
+#    print(@vim_files);
+#    foreach my $vim_file(@vim_files){
+#        my $linked = `ln -s $vim_plugins_dir/$vim_file ~/.vim/$vim_file`;
+#    }
+#}
 
 sub install_plugins {
 	print_me("...\n...\n...\n...\n");
@@ -118,8 +142,7 @@ sub check_vim_version {
 }
 
 back_up_everything();
-setup_dotfiles();
-setup_pathogen();
+setup_vim_files();
 setup_vundle();
 install_plugins();
 check_vim_version();
