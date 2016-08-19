@@ -1,5 +1,6 @@
 use strict;
 use warnings;
+#version 1.0
 
 sub print_me {
     my $text = shift;
@@ -45,8 +46,9 @@ sub setup_vim_files {
     my @vim_files = `ls $vim_plugins_dir`;
     chomp @vim_files;
     @vim_files = grep { $_ =~ /.vim$/ } @vim_files;
-    print_me("following vim files will be symlinked");
+    print_me("following vim files will be symlinked\n");
     print(@vim_files);
+    print_me("\n\n\n");
     foreach my $vim_file(@vim_files){
         my $linked = `ln -s $vim_plugins_dir/$vim_file ~/.vim/$vim_file`;
     }
@@ -98,18 +100,6 @@ sub setup_pathogen {
 }
 sub setup_vundle {
     setup_from_git('Vundle', 'https://github.com/VundleVim/Vundle.vim.git', '~/.vim/bundle/Vundle.vim', {});
-#    print_me "Cloning Vundle.vim";
-#    my $result = undef;
-#    eval {
-#        $result = `git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim`;
-#    } or do {
-#        print_me "Failed to git clone, please check your git setup";
-#        print_me $@ if $@;
-#        #exit;
-#    };
-#    warn $@ if $@;
-#
-#    print_me "Successfully git cloned\n";
 }
 
 sub update_vim {
@@ -143,6 +133,7 @@ sub check_vim_version {
 
 back_up_everything();
 setup_vim_files();
+setup_pathogen();
 setup_vundle();
 install_plugins();
 check_vim_version();
