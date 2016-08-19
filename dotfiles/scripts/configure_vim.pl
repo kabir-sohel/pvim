@@ -91,6 +91,7 @@ sub install_ycm {
         return;
     }
     print_me "Setting up ycm for the upgraded vim, dont panic if something isn't pefectly installed"; 
+    print_me "It will take around 10 mins, please keep the session open, I will inform you when the setup is done\n";
     my $update_vim_from_sh = `sh ~/.dotfiles/dotfiles/scripts/setup_ycm.sh`;
     print_me "YCM setup finished succesfully, Enjoy!!";
 }
