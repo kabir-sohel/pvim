@@ -6,8 +6,9 @@ sudo yum install -y ruby ruby-devel lua lua-devel luajit \
     perl-ExtUtils-XSpp perl-ExtUtils-CBuilder \
     perl-ExtUtils-Embed
 git clone https://github.com/vim/vim.git ~/vim
+
 cd ~/vim/
-sudo yum install gcc-g++
+
 sudo yum install ncurses-devel
 ./configure --with-features=huge \
             --enable-multibyte \

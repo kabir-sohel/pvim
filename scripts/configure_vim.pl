@@ -1,6 +1,8 @@
 use strict;
 use warnings;
 #version 1.0
+our $backup_dir;
+our $dotfiles_dir;
 
 sub print_me {
     my $text = shift;
@@ -28,11 +30,13 @@ sub back_up_everything {
     my $create_backup_dir = `mkdir -p $dir_name`;
     my $move_vimrc = `mv ~/.vimrc $dir_name`;
     my $move_vim = `mv ~/.vim/ $dir_name`;
+    return $dir_name;
 }
 sub setup_vim_files {
     print_me "Setting up vim files\n";
-    my $dotfiles_dir = "~/.dotfiles/dotfiles";
-    my $create_or_do_nothing = `mkdir -p $dotfiles_dir`;
+    
+    #my $dotfiles_dir = "~/.dotfiles/dotfiles";
+    #my $create_or_do_nothing = `mkdir -p $dotfiles_dir`;
     my $git_repo_dir = `pwd`;
     #my $vim_files_dir = "~/github/pvim/dotfiles";
     #print_me("Git repo dir  = $git_repo_dir");
@@ -40,11 +44,12 @@ sub setup_vim_files {
 
 
     #my $copy_everything = `cp -r $vim_files_dir/ $dotfiles_dir/`;
-    my $copy_everything = `cp -r dotfiles/ $dotfiles_dir/`;
+    my $copy_everything = `cp -r $dotfiles_dir/ ~/.dotfiles/dotfiles/`;
     
     my $created_bundle = `mkdir -p ~/.vim/bundle`;
-    my $link_vimrc = `ln -s $dotfiles_dir/.vimrc ~/.vimrc`;
-    my $vim_plugins_dir = $dotfiles_dir . "/vim_plugins";
+    my $link_vimrc = `ln -s ~/.dotfiles/dotfiles/.vimrc ~/.vimrc`;
+#my $vim_plugins_dir = $dotfiles_dir . "/vim_plugins";
+    my $vim_plugins_dir = "~/.dotfiles/dotfiles/vim_plugins";
     my @vim_files = `ls $vim_plugins_dir`;
     chomp @vim_files;
     @vim_files = grep { $_ =~ /.vim$/ } @vim_files;
@@ -76,14 +81,24 @@ sub setup_pathogen {
 sub setup_vundle {
     setup_from_git('Vundle', 'https://github.com/VundleVim/Vundle.vim.git', '~/.vim/bundle/Vundle.vim', {});
 }
-
+sub install_gcc {
+    my $installed_gcc = `sudo yum install gcc`;
+    my $installed_gpp = `sudo yum install gcc-c++`;
+}
 sub update_vim {
+    my $script_dir = shift;
     print_me "Upgrading vim.... will install fresh vim and do a lots of staffs, dont panic if something isn't perfectly installed";
     print_me "Please note that you may need to type y to give permission to install necessary softwares";
-    my $update_vim_from_sh = `sh ~/.dotfiles/dotfiles/scripts/build_vim.sh`;
+    print_me "First I need to set up gcc and g++";
+    install_gcc();
+    print_me "I need to put vim directory as backup to this directory : $backup_dir";
+    `mv ~/vim $backup_dir`;
+    #my $update_vim_from_sh = `sh ~/.dotfiles/dotfiles/scripts/build_vim.sh`;
+    my $update_vim_from_sh = `sh $script_dir`;
     print_me "Vim setup finished succesfully";
 }
 sub install_ycm {
+    my $ycm_script = shift;
     print_me "If you want to install You Complete Me plugin for vim , press 1";
     my $input = <>;
     chomp $input;
@@ -92,11 +107,14 @@ sub install_ycm {
     }
     print_me "Setting up ycm for the upgraded vim, dont panic if something isn't pefectly installed"; 
     print_me "It will take around 10 mins, please keep the session open, I will inform you when the setup is done\n";
-    my $update_vim_from_sh = `sh ~/.dotfiles/dotfiles/scripts/setup_ycm.sh`;
+    #my $update_vim_from_sh = `sh ~/.dotfiles/dotfiles/scripts/setup_ycm.sh`;
+    my $update_vim_from_sh = `sh $ycm_script`;
     print_me "YCM setup finished succesfully, Enjoy!!";
 }
 
 sub check_vim_version {
+    my $script_dir = shift;
+    print "script dir = $script_dir done\n";
     my $vim_version = `vim --version`;
     my @texts = split / /, $vim_version;
     $vim_version = $texts[4] * 10;
@@ -107,16 +125,19 @@ sub check_vim_version {
         my $input = <>;
         chomp $input;
         if($input == 1){
-            update_vim();
+            update_vim($script_dir);
         }
     }
 }
 
-back_up_everything();
+my $root_dir = `pwd`;
+my $script_dir = "scripts/";
+$backup_dir = back_up_everything();
+$dotfiles_dir = "dotfiles";
 setup_vim_files();
-setup_pathogen();
+#setup_pathogen();
 setup_vundle();
 install_plugins();
-check_vim_version();
-install_ycm();
+#check_vim_version($script_dir . "build_vim.sh");
+#install_ycm($script_dir. "setup_ycm.sh");
 
