@@ -3,12 +3,14 @@
 " F4 = previous color scheme
 " F5 = next color scheme
 " F6 = if pm file , compile the current db pm
-" F7 = dude restart
+" F7 = open same file in vertical split
 " F8(imap) = print STDERR Data::Dumper::Dumper(
+" C-i => toggles number and relative number
+" C-n => NerdTree
 
 
 " vundle set up starts here
-set nocompatible "no need to have more vi-compatibility 
+set nocompatible "no need to have more vi-compatibility
 set backspace=2 "normal backspace
 filetype off "switch of filetype detection, for vundle
 
@@ -55,7 +57,7 @@ set numberwidth=3               " Line number width
 set autoindent
 set smartindent
 set cindent
-"testing 
+"testing
 "syntax on
 
 "filetype sytanx , plugin and indentation
@@ -73,7 +75,7 @@ if has ("autocmd")
 endif
 
 set vb " use visual bell instead of beeping
-set incsearch " incremental search 
+set incsearch " incremental search
 "testing
 set hlsearch "highlight search results
 set bg=light " syntax highlighting
@@ -99,13 +101,14 @@ nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
 " Set f2 to toggle line numbers
 nmap <f2> :set number! number?<cr>
 " Set f3 to toggle showing invisible characters
-nmap <f3> :set list! list?<cr>
-set pastetoggle=<F5>
+"" Disabling showing invisible chars for now
+""nmap <f3> :set list! list?<cr>
+""set pastetoggle=<F3>
 
 filetype detect
 let my_filename = expand('%:t')
 "Booking Start
-nmap <F7> :!dude restart<CR>
+nmap <F7> :vsplit %<CR>
 imap <F8> print STDERR Data::Dumper::Dumper(
 if stridx(my_filename, ".pm") >= 0
     if booking_perl
@@ -123,6 +126,29 @@ endif
 map <F10> :set syntax=perl <CR>
 map <F9> :set syntax=html <CR>
 map <C-n> :NERDTreeToggle<CR>
+
+function! PasteToggle()
+    if(&paste == 1)
+        set nopaste
+    else
+        set paste
+    endif
+endfunc
+
+nnoremap <F3> :call PasteToggle()<cr>
+
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set norelativenumber
+    set number
+  else
+    set relativenumber
+  endif
+endfunc
+
+nnoremap <C-i> :call NumberToggle()<cr>
+
+
 if booking_perl
     "do nothing , already done secretely"
 else
@@ -135,7 +161,7 @@ source ~/.vim/cyclecolor.vim
 
 "****************************Perl=====>Start**************************
 
-autocmd FileType perl set autoindent|set smartindent " autoindent 
+autocmd FileType perl set autoindent|set smartindent " autoindent
 autocmd FileType perl set tabstop=4|set shiftwidth=4|set expandtab|set softtabstop=4 " 4 space tabs
 autocmd FileType perl set showmatch " show matching brackets
 " check perl code with :make
