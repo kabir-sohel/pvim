@@ -18,7 +18,9 @@ sudo yum install ncurses-devel
             --enable-perlinterp \
             --enable-luainterp \
             --enable-gui=gtk2 --enable-cscope --prefix=/usr
-make VIMRUNTIMEDIR=/usr/share/vim/vim74
+make VIMRUNTIMEDIR=/usr/share/vim/vim80
+#ln -s /usr/share/vim/vim80/syntax/syntax.vim /usr/share/vim/vim74/syntax/syntax.vim
+sudo ln -s vim80 vim74
 sudo make install
 
 
