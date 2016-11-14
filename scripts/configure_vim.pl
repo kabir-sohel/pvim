@@ -138,6 +138,6 @@ setup_vim_files();
 #setup_pathogen();
 setup_vundle();
 install_plugins();
-#check_vim_version($script_dir . "build_vim.sh");
+check_vim_version($script_dir . "build_vim.sh");
 #install_ycm($script_dir. "setup_ycm.sh");
 install_plugins()
