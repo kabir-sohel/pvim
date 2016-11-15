@@ -44,7 +44,7 @@ sub setup_vim_files {
 
 
     #my $copy_everything = `cp -r $vim_files_dir/ $dotfiles_dir/`;
-    my $copy_everything = `cp -r $dotfiles_dir/ ~/.dotfiles/dotfiles/`;
+    my $copy_everything = `cp -r $dotfiles_dir/* ~/.dotfiles/dotfiles`;
     
     my $created_bundle = `mkdir -p ~/.vim/bundle`;
     my $link_vimrc = `ln -s ~/.dotfiles/dotfiles/.vimrc ~/.vimrc`;
