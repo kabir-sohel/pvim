@@ -1,0 +1,63 @@
+# General .alias file
+#
+alias vi=vim
+alias ls='ls -G'
+alias grep='grep --color'
+alias main='cd /usr/local/git_tree/main/'
+alias aff='cd /usr/local/cvs_tree/affiliate_data'
+alias sysadmin='cd /usr/local/git_tree/sysadmin'
+alias tailerror='DATE=`date +%Y-%m-%d`;tail -vf `find /var/log/ -type f -name error\*log -o -name error\*log.$DATE 2>/dev/null`'
+alias tailaccess='DATE=`date +%Y-%m-%d`;tail -vf `find /var/log/ -type f -name access\*log -o -name access\*log.$DATE 2>/dev/null`'
+alias apps='cd /usr/local/git_tree/main/apps/'
+alias admin='cd /usr/local/git_tree/main/apps/admin/'
+alias Bookings="cd /usr/local/git_tree/main/lib/Bookings/"
+alias lib='cd /usr/local/git_tree/main/lib/'
+alias Db="cd /usr/local/git_tree/main/lib/Bookings/Db/"
+alias lingo="cd /usr/local/git_tree/main/apps/admin/lingo/"
+
+
+
+#GIT related alias
+alias gpull="git pull --rebase"
+alias pull="pull --rebase"
+alias gpush="git pull --rebase && git push";
+
+
+#personal
+
+alias e="exit"
+alias off="ssh -A ksohel-off.dev.booking.com"
+alias hi="ssh -A ksohel-hotelintranet.dev.booking.com"
+alias cron="ssh -A ksohel-cron.dev.booking.com"
+alias cron2="ssh -A ksohel2-cron.dev.booking.com"
+alias cron3="ssh -A ksohel3-cron.dev.booking.com"
+alias shell="ssh -A ksohel.shell.booking.com"
+alias finapi="ssh -A ksohel-finapi.dev.booking.com"
+alias finapi2="ssh -A ksohel2-finapi.dev.booking.com"
+
+
+alias app="ssh -A ksohel-app.dev.booking.com"
+alias app2="ssh -A ksohel2-app.dev.booking.com"
+alias adm="ssh -A ksohel-adm.dev.booking.com"
+alias adm2="ssh -A ksohel2-adm.dev.booking.com"
+alias cpit="ssh -A ksohel-cockpit.dev.booking.com"
+alias joinapp="ssh -A ksohel-joinapp.dev.booking.com"
+#vpn
+alias vpn="ssh -fN vpn; open /Applications/Tunnelblick.app; bash ~/tblick.sh"
+alias vpnoff="ssh -O exit vpn; osascript -e 'tell application \"Tunnelblick\" to quit';"
+alias other="unlink /Users/ksohel/.ssh/config && ln -s /Users/ksohel/.ssh/config_other /Users/ksohel/.ssh/config"
+
+#Local Machine
+alias doc="cd ~/Documents/"
+alias fin="cd /Users/ksohel/Documents/Projects/Finance/"
+alias pro="cd /Users/ksohel/Documents/Projects/"
+
+
+#local php setup
+alias dude="sudo apachectl"
+alias booking="unlink /Users/ksohel/.ssh/config && ln -s /Users/ksohel/.ssh/config_booking /Users/ksohel/.ssh/config"
+alias cf="cd /Users/ksohel/Documents/contests/cf/"
+
+
+#aws related data
+alias aws="ssh -i ~/.ssh/MyKeyPair.pem ec2-user@35.157.89.247"
